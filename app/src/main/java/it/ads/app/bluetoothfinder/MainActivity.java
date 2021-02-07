@@ -1,6 +1,7 @@
 package it.ads.app.bluetoothfinder;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 scanDevices();
-                Toast.makeText(getApplicationContext(),
-                        "Scanning for Bluetooth devices...",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        "Scanning for Bluetooth devices...",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        String deviceType = "Unknown";
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -160,9 +162,32 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Found Device - "+device.getAddress()+" - "+device.getName());
 
                 if(!mDeviceList.contains("Name: "+device.getName()
-                        + "\nMAC: " + device.getAddress())){
+                        + "\nMAC: " + device.getAddress()
+                        +"\nType: "+deviceType)){
+
+                    switch (device.getBluetoothClass().getDeviceClass()) {
+                        case BluetoothClass.Device.PHONE_CELLULAR:
+                            deviceType = "Phone";
+                        case BluetoothClass.Device.PHONE_SMART:
+                            deviceType = "Phone";
+                        case BluetoothClass.Device.PHONE_UNCATEGORIZED:
+                            deviceType = "Phone";
+                            break;
+                        case BluetoothClass.Device.AUDIO_VIDEO_HEADPHONES:
+                            deviceType = "Headphones";
+                        case BluetoothClass.Device.AUDIO_VIDEO_WEARABLE_HEADSET:
+                            deviceType = "Headphones";
+                            break;
+                        case BluetoothClass.Device.AUDIO_VIDEO_LOUDSPEAKER:
+                            deviceType = "Speaker";
+                            break;
+                        case BluetoothClass.Device.WEARABLE_WRIST_WATCH:
+                            deviceType = "Smart Watch";
+                    }
+
                     mDeviceList.add("Name: "+device.getName()
-                            + "\nMAC: " + device.getAddress());
+                            + "\nMAC: " + device.getAddress()
+                    +"\nType: "+deviceType);
                     Log.i("BT", device.getName() + "\n" + device.getAddress());
                 }else{
                     Log.i(TAG, "Avoiding duplicates (hackjob but work for now ;))");
@@ -181,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 mBluetoothAdapter.cancelDiscovery();
                 progressBar.setVisibility(View.INVISIBLE);
-
 
             }else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equalsIgnoreCase(action)){
 
