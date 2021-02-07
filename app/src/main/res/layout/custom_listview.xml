@@ -1,43 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    tools:ignore="UselessParent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/cardview_default_elevation"
+    android:paddingTop="@dimen/cardview_default_elevation">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0.5dp">
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp">
 
+        <ImageView
+            android:id="@+id/imgDevice"
+            android:src="@drawable/icon_bt"
+            android:paddingLeft="10dp"
+            android:layout_width="80dp"
+            android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/txtDeviceName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="bottom|left"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/imgDevice"
+            android:fontFamily="sans-serif-medium"
+            android:maxLines="1"
+            android:gravity="center"
+            android:text="Name"
             android:textStyle="bold"
-            tools:ignore="RtlHardcoded" />
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/txtDeviceAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="top|left"
-            android:textColor="@android:color/black"
-            android:textSize="14sp"
-            tools:ignore="RtlHardcoded" />
+            android:layout_below="@+id/txtDeviceName"
+            android:layout_alignStart="@+id/txtDeviceName"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Address"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtDeviceType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtDeviceAddress"
+            android:layout_alignStart="@+id/txtDeviceAddress"
+            android:layout_gravity="bottom"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:layout_marginBottom="0.5dp"
+            android:text="Type"
+            android:textSize="14sp" />
 
 
     </androidx.cardview.widget.CardView>
-
-
-
 </RelativeLayout>

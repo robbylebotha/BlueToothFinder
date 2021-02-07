@@ -31,11 +31,14 @@ public class CustomAdapter extends ArrayAdapter<DeviceData> {
 
         DeviceData currentNumberPosition = getItem(position);
 
-        TextView textView1 = currentItemView.findViewById(R.id.textView1);
-        textView1.setText(currentNumberPosition.getDeviceName());
+        TextView textView1 = currentItemView.findViewById(R.id.txtDeviceName);
+        textView1.setText("Name: "+currentNumberPosition.getDeviceName());
 
-        TextView textView2 = currentItemView.findViewById(R.id.textView2);
-        textView2.setText(currentNumberPosition.getDeviceID());
+        TextView textView2 = currentItemView.findViewById(R.id.txtDeviceAddress);
+        textView2.setText("MAC: "+currentNumberPosition.getDeviceID());
+
+        TextView textView3 = currentItemView.findViewById(R.id.txtDeviceType);
+        textView3.setText("Type: "+currentNumberPosition.getDeviceType());
 
         return currentItemView;
     }

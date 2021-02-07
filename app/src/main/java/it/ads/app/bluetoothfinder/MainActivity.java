@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
     private ArrayList<String> mDeviceList = new ArrayList<>();
+    private ArrayList<DeviceData> mDeviceListCustom;
     private BluetoothAdapter mBluetoothAdapter;
     private String TAG = "kopo88";
     //get access to location permission
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
         progressBar = findViewById(R.id.llProgressBar);
+        mDeviceListCustom = new ArrayList<>();
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Button fab = findViewById(R.id.button1);
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             Log.i(TAG, "Received Broadcast ");
+
             if (BluetoothDevice.ACTION_FOUND.equalsIgnoreCase(action)) {
 
                 BluetoothDevice device = intent
@@ -188,13 +191,18 @@ public class MainActivity extends AppCompatActivity {
                     mDeviceList.add("Name: "+device.getName()
                             + "\nMAC: " + device.getAddress()
                     +"\nType: "+deviceType);
+                    mDeviceListCustom.add(new DeviceData(device.getName()
+                            , device.getAddress()
+                            ,deviceType));
                     Log.i("BT", device.getName() + "\n" + device.getAddress());
                 }else{
                     Log.i(TAG, "Avoiding duplicates (hackjob but work for now ;))");
                 }
 
-                listView.setAdapter(new ArrayAdapter<>(context,
-                        android.R.layout.simple_list_item_1, mDeviceList));
+//                listView.setAdapter(new ArrayAdapter<>(context,
+//                        android.R.layout.simple_list_item_1, mDeviceList));
+                listView.setAdapter(new CustomAdapter(getApplicationContext(),mDeviceListCustom));
+
 
             }else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equalsIgnoreCase(action)){
 
@@ -203,7 +211,10 @@ public class MainActivity extends AppCompatActivity {
                 if(devicesFound == 0){
                     Toast.makeText(getApplicationContext(), "No devices found",
                             Toast.LENGTH_LONG).show();
+                    mDeviceList.clear();
+                    mDeviceListCustom.clear();
                 }
+
                 mBluetoothAdapter.cancelDiscovery();
                 progressBar.setVisibility(View.INVISIBLE);
 
@@ -211,6 +222,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i(TAG ,"Trying to discover BLE devices...");
                 progressBar.setVisibility(View.VISIBLE);
+                if(mDeviceListCustom != null || !mDeviceListCustom.isEmpty()){
+                    mDeviceListCustom.clear();
+                    mDeviceList.clear();
+                }
 
             }
         }
