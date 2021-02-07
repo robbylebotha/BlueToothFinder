@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void scanDevices(){
 
+        if (!mBluetoothAdapter.isEnabled()) {
+            startBluetooth();
+        }
+
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
@@ -127,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
         if(mBluetoothAdapter != null){
             mBluetoothAdapter.startDiscovery();
             Log.i(TAG,"Scanning for Bluetooth devices...");
-            Toast.makeText(getApplicationContext(),
-                    "Scanning for Bluetooth devices...",Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),
+//                    "Scanning for Bluetooth devices...",Toast.LENGTH_LONG).show();
         }else{
             Toast.makeText(getApplicationContext(),
                     "Something wrong!",Toast.LENGTH_LONG).show();
@@ -169,15 +173,20 @@ public class MainActivity extends AppCompatActivity {
 
             }else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equalsIgnoreCase(action)){
 
-                Log.i(TAG ,"Discovery finished "+mDeviceList.size());
+                int devicesFound = mDeviceList.size();
+                Log.i(TAG ,"Discovery finished "+devicesFound);
+                if(devicesFound == 0){
+                    Toast.makeText(getApplicationContext(), "No devices found",
+                            Toast.LENGTH_LONG).show();
+                }
                 mBluetoothAdapter.cancelDiscovery();
-//                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
 
 
             }else if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equalsIgnoreCase(action)){
 
                 Log.i(TAG ,"Trying to discover BLE devices...");
-//                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
 
             }
         }
