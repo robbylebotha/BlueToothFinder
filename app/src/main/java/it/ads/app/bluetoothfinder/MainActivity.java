@@ -225,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 if(mDeviceListCustom != null || !mDeviceListCustom.isEmpty()){
                     mDeviceListCustom.clear();
                     mDeviceList.clear();
+                    listView.setAdapter(null);
                 }
 
             }
